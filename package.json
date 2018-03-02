@@ -1,0 +1,41 @@
+{
+  "name": "tour-of-heroes",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "node-sass": "^4.7.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-hash-route": "^1.0.11",
+    "react-scripts": "1.1.1",
+    "redux-easy": "^2.0.25"
+  },
+  "scripts": {
+    "build": "react-scripts build",
+    "build-css": "node-sass src/ -o src/",
+    "cover": "CI=true npm test -- --coverage",
+    "cover-open": "open coverage/lcov-report/index.html",
+    "flow": "flow",
+    "format": "prettier --write 'src/**/*.{css,js}'",
+    "lint": "eslint --quiet src --ext .js",
+    "start": "npm-run-all -p watch-css start-js",
+    "start-js": "react-scripts start",
+    "test": "react-scripts test --env=jsdom",
+    "test-no-watch": "CI=true react-scripts test --env=jsdom",
+    "verify": "npm-run-all lint flow test-no-watch",
+    "watch-css": "npm run build-css && node-sass src/ -o src/ --watch"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.2",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "eslint": "^4.18.1",
+    "eslint-plugin-flowtype": "^2.46.1",
+    "eslint-plugin-html": "^4.0.2",
+    "eslint-plugin-react": "^7.7.0",
+    "flow-bin": "^0.66.0",
+    "jest": "^22.4.2",
+    "jest-cli": "^22.4.2",
+    "npm-run-all": "^4.1.2",
+    "prettier": "^1.11.1"
+  }
+}
