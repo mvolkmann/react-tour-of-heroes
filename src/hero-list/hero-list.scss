@@ -1,3 +1,5 @@
+@import '../share.scss';
+
 .hero-list {
   .hero {
     align-items: center;
@@ -7,9 +9,9 @@
     width: 224px;
 
     button {
-      background-color: #888;
+      background-color: $button-bg-color;
       border-radius: 4px;
-      color: white;
+      color: $button-color;
       cursor: pointer;
       float: right;
       font-size: 18px;
@@ -19,7 +21,7 @@
     }
 
     .hero-id {
-      background-color: #607D8B;
+      background-color: $hover-color;
       border-top-left-radius: 4px;
       border-bottom-left-radius: 4px;
       color: white;
@@ -28,8 +30,8 @@
     }
 
     .hero-name {
-      background-color: #EEE;
-      color: #888;
+      background-color: $name-bg-color;
+      color: $name-color;
       display: inline-block;
       flex-grow: 1;
       height: 38px;
@@ -43,8 +45,8 @@
     position: relative;
 
     .hero-name {
-      background-color: #DDD;
-      color: #607D8B;
+      background-color: $hover-bg-color;
+      color: $hover-color;
     }
   }
 }

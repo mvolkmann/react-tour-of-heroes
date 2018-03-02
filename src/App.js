@@ -1,13 +1,20 @@
 // @flow
 
 import React, {Component} from 'react';
-import {dispatchSet} from 'redux-easy';
+import {dispatchSet, watch} from 'redux-easy';
 import Dashboard from './dashboard/dashboard';
 import HeroList from './hero-list/hero-list';
 
 import './App.css';
 
-type PropsType = {};
+type PropsType = {
+  route: string
+};
+
+const routeMap = {
+  Dashboard: <Dashboard />,
+  Heroes: <HeroList />
+};
 
 class App extends Component<PropsType> {
   getButtons() {
@@ -29,11 +36,10 @@ class App extends Component<PropsType> {
       <div className="App">
         <h1 className="App-title">Tour of Heroes</h1>
         {this.getButtons()}
-        <Dashboard />
-        <HeroList />
+        {routeMap[this.props.route]}
       </div>
     );
   }
 }
 
-export default App;
+export default watch(App, {route: ''});

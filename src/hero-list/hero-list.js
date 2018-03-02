@@ -25,6 +25,7 @@ class HeroList extends Component<PropsType> {
   }
 
   render() {
+    console.log('hero-list.js render: entered');
     const {heroes} = this.props;
     return (
       <div className="hero-list">

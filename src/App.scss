@@ -1,0 +1,20 @@
+@import './share.scss';
+
+.App {
+  font-family: sans-serif;
+
+  button {
+    background-color: $name-bg-color;
+    border: 0;
+    border-radius: 4px;
+    color: $name-color;
+    font-size: 16px;
+    height: 38px;
+    margin-right: 10px;
+  }
+
+  button:hover {
+    background-color: $hover-bg-color;
+    color: $hover-color;
+  }
+}
