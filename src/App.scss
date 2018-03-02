@@ -17,4 +17,14 @@
     background-color: $hover-bg-color;
     color: $hover-color;
   }
+
+  input {
+    border: solid lightgray 1px;;
+    border-radius: 4px;
+    padding: 4px;
+  }
+
+  label {
+    margin-right: 5px;
+  }
 }

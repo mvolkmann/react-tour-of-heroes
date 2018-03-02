@@ -1,10 +1,10 @@
 // @flow
 
 import React from 'react';
-import {reduxSetup} from 'redux-easy';
+import {addReducer, reduxSetup} from 'redux-easy';
 import App from './App';
 
-import type {StateType} from './types';
+import type {HeroType, StateType} from './types';
 
 const initialState: StateType = {
   heroes: [
@@ -19,8 +19,18 @@ const initialState: StateType = {
     {id: 19, name: 'Magma'},
     {id: 20, name: 'Tornado'}
   ],
+  previousRoute: '',
   route: 'Dashboard',
   selectedHero: null
 };
+
+addReducer('selectHero',
+  (state, hero: HeroType) => ({
+    ...state,
+    selectedHero: hero,
+    previousRoute: state.route,
+    route: 'Detail'
+  })
+);
 
 reduxSetup({component: <App />, initialState});
