@@ -3,6 +3,7 @@
 import React, {Component} from 'react';
 import {dispatchSet, watch} from 'redux-easy';
 import Dashboard from './dashboard/dashboard';
+import HeroDetail from './hero-detail/hero-detail';
 import HeroList from './hero-list/hero-list';
 
 import './App.css';
@@ -13,6 +14,7 @@ type PropsType = {
 
 const routeMap = {
   Dashboard: <Dashboard />,
+  Detail: <HeroDetail />,
   Heroes: <HeroList />
 };
 

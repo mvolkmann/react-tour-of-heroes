@@ -3,6 +3,7 @@
 import React, {Component} from 'react';
 import {watch} from 'redux-easy';
 
+import {showDetail} from '../hero-detail/hero-detail';
 import type {HeroType} from '../types';
 
 import './hero-list.css';
@@ -14,7 +15,11 @@ type PropsType = {
 class HeroList extends Component<PropsType> {
   renderHero(hero) {
     return (
-      <div className="hero" key={hero.id}>
+      <div
+        className="hero"
+        key={hero.id}
+        onClick={() => showDetail(hero)}
+      >
         <div className="hero-id">{hero.id}</div>
         <div className="hero-name">
           {hero.name}
