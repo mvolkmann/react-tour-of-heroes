@@ -1,6 +1,15 @@
 @import '../share.scss';
 
 .hero-list {
+  .add-form {
+    button {
+      font-size: 12px;
+      height: auto;
+      margin-left: 5px;
+      padding: 4px;
+    }
+  }
+
   .hero {
     align-items: center;
     border-radius: 4px;
@@ -15,8 +24,9 @@
       cursor: pointer;
       float: right;
       font-size: 18px;
+      height: auto;
       margin-right: 5px;
-      margin-top: 5px;
+      margin-top: 6px;
       padding: 2px 7px;
     }
 

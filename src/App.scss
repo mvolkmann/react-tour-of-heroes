@@ -13,6 +13,10 @@
     margin-right: 10px;
   }
 
+  button:disabled {
+    color: white;
+  }
+
   button:hover {
     background-color: $hover-bg-color;
     color: $hover-color;
