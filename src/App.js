@@ -5,6 +5,7 @@ import {dispatchSet, watch} from 'redux-easy';
 import Dashboard from './dashboard/dashboard';
 import HeroDetail from './hero-detail/hero-detail';
 import HeroList from './hero-list/hero-list';
+import Messages from './messages/messages';
 
 import './App.css';
 
@@ -39,6 +40,7 @@ class App extends Component<PropsType> {
         <h1 className="App-title">Tour of Heroes</h1>
         {this.getButtons()}
         {routeMap[this.props.route]}
+        <Messages />
       </div>
     );
   }

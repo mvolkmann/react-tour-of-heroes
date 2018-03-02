@@ -26,6 +26,7 @@ class HeroDetail extends Component<PropsType> {
 
   render() {
     const {selectedHero} = this.props;
+    dispatch('addMessage', 'in HeroDetail for ' + selectedHero.name);
     return (
       <div className="hero-detail">
         <h2>

@@ -1,11 +1,18 @@
+@import '../share.scss';
+
 .dashboard {
   text-align: center;
 
   .hero {
-    background: #607D8B; // blue-gray
-    color: white;
+    background: $hover-color;
+    color: $name-bg-color;
     display: inline-block;
     margin: 10px;
     padding: 20px;
+  }
+
+  .hero:hover {
+    background: $name-bg-color;
+    color: $hover-color;
   }
 }
