@@ -15,6 +15,8 @@
     "build-css": "node-sass src/ -o src/",
     "cover": "CI=true npm test -- --coverage",
     "cover-open": "open coverage/lcov-report/index.html",
+    "dbi": "mysql --user root -p tour_of_heroes",
+    "dbsetup": "mysql --user root < ./ddl.sql",
     "flow": "flow",
     "format": "prettier --write 'src/**/*.{css,js}'",
     "lint": "eslint --quiet src --ext .js",

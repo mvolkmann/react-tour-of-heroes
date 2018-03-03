@@ -1,0 +1,61 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "REST server for React Tour of Heroes",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel -q src -d build",
+    "dbi": "mysql --user root -p tour_of_heroes",
+    "dbstart": "mysql.server start",
+    "dbstop": "mysql.server stop",
+    "cover": "CI=true npm test -- --coverage",
+    "cover-open": "open coverage/lcov-report/index.html",
+    "flow": "flow",
+    "format": "prettier-eslint --write src/**/*.js",
+    "lint": "eslint --quiet src --ext .js",
+    "start": "node build/index.js",
+    "start-dev": "babel-watch --message 'restarting' --ignore node_modules -- src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 90,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    }
+  },
+  "author": "R. Mark Volkmann <r.mark.volkmann@gmail.com> (https://mvolkmann.github.io/)",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "express-healthcheck": "^0.1.0",
+    "morgan": "^1.9.0",
+    "mysql-easier": "^2.0.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.2",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-watch": "^2.0.7",
+    "eslint": "^4.18.2",
+    "eslint-plugin-flowtype": "^2.46.1",
+    "eslint-plugin-html": "^4.0.2",
+    "flow-bin": "^0.66.0",
+    "flow-typed": "^2.3.0",
+    "husky": "^0.14.3",
+    "jest": "^22.4.2",
+    "jest-cli": "^22.4.2",
+    "npm-run-all": "^4.1.2",
+    "prettier": "^1.11.1",
+    "prettier-eslint-cli": "^4.7.1"
+  }
+}
