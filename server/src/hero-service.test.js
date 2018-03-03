@@ -4,15 +4,18 @@ import {
   deleteHero,
   filterHeroes,
   getAllHeroes,
-  getHero,
+  getHeroById,
   postHero,
-  putHero
+  putHero,
+  setConn
 } from './hero-service';
 import './database';
 
 // These tests assume the database is the state
 // produced by running "npm run dbsetup".
 describe('hero-service', () => {
+  beforeEach(setConn);
+
   test('getAllHeroes, deleteHero, and postHero', async () => {
     const heroes = await getAllHeroes();
     expect(heroes.length).toBeGreaterThan(0);
@@ -56,7 +59,7 @@ describe('hero-service', () => {
     await putHero(req);
 
     req = (({params: {id}}: any): express$Request);
-    hero = await getHero(req);
+    hero = await getHeroById(req);
     expect(hero.name).toBe(newName);
   });
 });

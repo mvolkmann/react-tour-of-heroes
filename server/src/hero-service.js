@@ -4,7 +4,7 @@ import sortBy from 'lodash/sortBy';
 import mySqlEasier from 'mysql-easier';
 
 import {errorHandler} from './util/error-util';
-import {cast, castString} from './util/flow-util';
+import {castObject} from './util/flow-util';
 
 import type {HeroType} from './types';
 
@@ -13,6 +13,9 @@ type HandlerType = (
   res: express$Response
 ) => Promise<mixed>;
 
+let conn; // database connection
+
+// This maps URLs to handler functions.
 export function heroService(app: express$Application): void {
   const URL_PREFIX = '/hero';
   app.delete(URL_PREFIX + '/:id', deleteHero);
@@ -22,53 +25,55 @@ export function heroService(app: express$Application): void {
   app.put(URL_PREFIX, wrap(putHero));
 }
 
-export async function deleteHero(req: express$Request): Promise<void> {
-  const {id} = req.params;
-  const conn = await mySqlEasier.getConnection();
-  conn.deleteById('hero', id);
+export function deleteHero(req: express$Request): void {
+  conn.deleteById('hero', req.params.id);
 }
 
 export async function filterHeroes(req: express$Request): Promise<HeroType[]> {
   const {contains} = req.params;
-  const conn = await mySqlEasier.getConnection();
   const sql = `select * from hero where name like "%${contains}%"`;
   const heroes = await conn.query(sql);
   return sortBy(heroes, ['name']);
 }
 
 export async function getAllHeroes(): Promise<HeroType[]> {
-  const conn = await mySqlEasier.getConnection();
   const heroes = await conn.getAll('hero');
   return sortBy(heroes, ['name']);
 }
 
-export async function getHero(req: express$Request): Promise<HeroType> {
+export function getHeroById(req: express$Request): Promise<HeroType> {
   const {id} = req.params;
-  const conn = await mySqlEasier.getConnection();
   return conn.getById('hero', id);
 }
 
-export async function postHero(req: express$Request): Promise<number> {
-  const {name} = cast(req.body, Object);
-  const conn = await mySqlEasier.getConnection();
+export function postHero(req: express$Request): Promise<number> {
+  const {name} = castObject(req.body);
+  if (!name) {
+    throw new Error('postHero requires body to have name property');
+  }
   return conn.insert('hero', {name});
 }
 
-export async function putHero(req: express$Request): Promise<void> {
+export function putHero(req: express$Request): Promise<void> {
   const hero = ((req.body: any): HeroType);
   const {id} = hero;
   delete hero.id;
-
-  const conn = await mySqlEasier.getConnection();
   return conn.updateById('hero', id, hero);
 }
 
+// This is needed by tests since they call functions
+// defined here without using the wrap function.
+export async function setConn(): Promise<void> {
+  conn = await mySqlEasier.getConnection();
+}
+
+// This acquires a database connection
+// and provides common error handling
+// for all the REST services defined here.
 function wrap(handler: HandlerType): HandlerType {
-  return async (
-    req: express$Request,
-    res: express$Response
-  ) => {
+  return async (req: express$Request, res: express$Response) => {
     try {
+      await setConn();
       const result = await handler(req, res);
       res.send(result);
     } catch (e) {
