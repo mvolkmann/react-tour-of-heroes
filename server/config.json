@@ -1,9 +1,8 @@
 {
   "db": {
-    "database": "smartdevice",
+    "database": "tour_of_heroes",
     "debug": false,
     "host": "localhost",
-    "insecureAuth": true,
     "password": "",
     "port": 3306,
     "user": "root"

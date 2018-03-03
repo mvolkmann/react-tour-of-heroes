@@ -2,18 +2,13 @@
 
 import mySqlEasier from 'mysql-easier';
 import {errorHandler} from './util/error-util';
+import {cast, castString} from './util/flow-util';
 
 const NOT_FOUND = 404;
 const OK = 200;
 
-let conn;
-
-async function ensureMySql() {
-  if (!conn) conn = await mySqlEasier.getConnection();
-}
-
 export async function deleteAll(tableName: string): Promise<void> {
-  await ensureMySql();
+  const conn = await mySqlEasier.getConnection();
   return conn.deleteAll(tableName);
 }
 
@@ -21,18 +16,18 @@ export async function deleteById(
   tableName: string,
   id: number
 ): Promise<number> {
-  await ensureMySql();
+  const conn = await mySqlEasier.getConnection();
   const {affectedRows} = await conn.deleteById(tableName, id);
   return affectedRows;
 }
 
 export async function getAll(tableName: string): Promise<Object[]> {
-  await ensureMySql();
+  const conn = await mySqlEasier.getConnection();
   return conn.getAll(tableName);
 }
 
 export async function getById(tableName: string, id: number): Promise<Object> {
-  await ensureMySql();
+  const conn = await mySqlEasier.getConnection();
   return conn.getById(tableName, id);
 }
 
@@ -41,7 +36,7 @@ export async function patch(
   id: number,
   changes: Object
 ): Promise<Object> {
-  await ensureMySql();
+  const conn = await mySqlEasier.getConnection();
   const type = await conn.getById(tableName, id);
   const newType = {...type, ...changes};
   await conn.updateById(tableName, id, newType);
@@ -49,12 +44,15 @@ export async function patch(
 }
 
 export async function post(tableName: string, data: Object): Promise<number> {
-  await ensureMySql();
+  const conn = await mySqlEasier.getConnection();
   return conn.insert(tableName, data);
 }
 
-export async function query(tableName: string, where: string): Promise<Object[]> {
-  await ensureMySql();
+export async function query(
+  tableName: string,
+  where: string
+): Promise<Object[]> {
+  const conn = await mySqlEasier.getConnection();
   //TODO: Should we be concerned about SQL injection here?
   const sql = `select * from ${tableName} where ${where}`;
   return conn.query(sql);
@@ -133,7 +131,7 @@ export default function crudService(
     res: express$Response
   ): Promise<void> {
     const id = Number(req.params.id);
-    const changes = req.body;
+    const changes = cast(req.body, Object);
     try {
       const newType = await patch(tableName, id, changes);
       res.status(OK).send(JSON.stringify(newType));
@@ -148,7 +146,8 @@ export default function crudService(
     res: express$Response
   ): Promise<void> {
     try {
-      const rows = await post(tableName, req.body);
+      const body = cast(req.body, Object);
+      const rows = await post(tableName, body);
       res.send(JSON.stringify(rows));
     } catch (e) {
       // istanbul ignore next
@@ -160,7 +159,7 @@ export default function crudService(
     req: express$Request,
     res: express$Response
   ): Promise<void> {
-    const where = req.body;
+    const where = castString(req.body);
     try {
       const rows = await query(tableName, where);
       res.send(JSON.stringify(rows));

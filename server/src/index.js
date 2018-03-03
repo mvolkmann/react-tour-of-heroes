@@ -6,8 +6,9 @@ import express from 'express';
 import healthCheck from 'express-healthcheck';
 import morgan from 'morgan';
 
-import crudService from './crud-service';
-//import {heroService} from './hero-service';
+//import crudService from './crud-service';
+import './database';
+import {heroService} from './hero-service';
 
 const app = express();
 
@@ -29,8 +30,8 @@ const corsOptions = {};
 app.use(cors(corsOptions));
 */
 
-//heroService(app);
-crudService(app, 'hero');
+//crudService(app, 'hero');
+heroService(app);
 
 // This causes logging of all HTTP requests to be written to stdout.
 // The provided options are combined, common, dev, short, and tiny.
