@@ -4,7 +4,7 @@ import sortBy from 'lodash/sortBy';
 import mySqlEasier from 'mysql-easier';
 
 import {errorHandler} from './util/error-util';
-import {cast} from './util/flow-util';
+import {cast, castString} from './util/flow-util';
 
 import type {HeroType} from './types';
 
@@ -20,21 +20,6 @@ export function heroService(app: express$Application): void {
   app.get(URL_PREFIX + '/:contains', wrap(filterHeroes));
   app.post(URL_PREFIX, wrap(postHero));
   app.put(URL_PREFIX, wrap(putHero));
-}
-
-function wrap(handler: HandlerType): HandlerType {
-  return async (
-    req: express$Request,
-    res: express$Response
-  ) => {
-    try {
-      const result = await handler(req, res);
-      res.send(result);
-    } catch (e) {
-      // istanbul ignore next
-      errorHandler(res, e);
-    }
-  };
 }
 
 export async function deleteHero(req: express$Request): Promise<void> {
@@ -57,15 +42,38 @@ export async function getAllHeroes(): Promise<HeroType[]> {
   return sortBy(heroes, ['name']);
 }
 
-export async function postHero(req: express$Request): Promise<number> {
-  const body = cast(req.body, Object);
+export async function getHero(req: express$Request): Promise<HeroType> {
+  const {id} = req.params;
   const conn = await mySqlEasier.getConnection();
-  return conn.insert('hero', body);
+  return conn.getById('hero', id);
+}
+
+export async function postHero(req: express$Request): Promise<number> {
+  const {name} = cast(req.body, Object);
+  const conn = await mySqlEasier.getConnection();
+  return conn.insert('hero', {name});
 }
 
 export async function putHero(req: express$Request): Promise<void> {
-  const {id} = req.params;
-  const body = cast(req.body, Object);
+  const hero = ((req.body: any): HeroType);
+  const {id} = hero;
+  delete hero.id;
+
   const conn = await mySqlEasier.getConnection();
-  return conn.updateById('hero', id, body);
+  return conn.updateById('hero', id, hero);
+}
+
+function wrap(handler: HandlerType): HandlerType {
+  return async (
+    req: express$Request,
+    res: express$Response
+  ) => {
+    try {
+      const result = await handler(req, res);
+      res.send(result);
+    } catch (e) {
+      // istanbul ignore next
+      errorHandler(res, e);
+    }
+  };
 }

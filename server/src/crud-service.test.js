@@ -19,7 +19,7 @@ type TestDescType = {
   teardownFn?: Function
 };
 
-describe('crudService', () => {
+describe.skip('crudService', () => {
   let alertTypeId1, alertTypeId2, instanceId, typeId1, typeId2, userId;
 
   async function alertSetup(oldObject, newObject) {

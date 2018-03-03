@@ -6,6 +6,7 @@
   "scripts": {
     "build": "babel -q src -d build",
     "dbi": "mysql --user root -p tour_of_heroes",
+    "dbsetup": "mysql --user root < ./ddl.sql",
     "dbstart": "mysql.server start",
     "dbstop": "mysql.server stop",
     "cover": "CI=true npm test -- --coverage",
@@ -15,7 +16,7 @@
     "lint": "eslint --quiet src --ext .js",
     "start": "node build/index.js",
     "start-dev": "babel-watch --message 'restarting' --ignore node_modules -- src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watch"
   },
   "jest": {
     "collectCoverageFrom": [
