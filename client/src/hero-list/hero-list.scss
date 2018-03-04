@@ -17,7 +17,7 @@
     margin-top: 10px;
     width: 224px;
 
-    button {
+    .delete-btn {
       background-color: $button-bg-color;
       border-radius: 4px;
       color: $button-color;
@@ -28,6 +28,7 @@
       margin-right: 5px;
       margin-top: 6px;
       padding: 2px 7px;
+      z-index: 2;
     }
 
     .hero-id {

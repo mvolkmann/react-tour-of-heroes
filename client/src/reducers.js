@@ -35,6 +35,7 @@ addReducer('deleteHero',
   (state: StateType, heroId: number) => {
     const {heroes} = state;
     const updatedHeroes = heroes.filter(hero => hero.id !== heroId);
+    console.log('reducers.js deleteHero: updatedHeroes =', updatedHeroes);
     return {
       ...state,
       heroes: updatedHeroes

@@ -5,6 +5,7 @@ import {dispatch, Input, watch} from 'redux-easy';
 
 import {showDetail} from '../hero-detail/hero-detail';
 import type {HeroType} from '../types';
+import {deleteResource, postJson} from '../util/rest-util';
 
 import './hero-list.css';
 
@@ -14,12 +15,27 @@ type PropsType = {
 };
 
 class HeroList extends Component<PropsType> {
-
-  addHero = () => {
-    if (!this.disabled()) dispatch('addHero');
+  addHero = async () => {
+    if (!this.disabled()) {
+      const name = this.props.newHeroName;
+      await postJson('hero', {name});
+      dispatch('addHero');
+    }
   };
 
-  deleteHero = (hero: HeroType) => dispatch('deleteHero', hero.id);
+  deleteHero = async (
+    event: SyntheticInputEvent<HTMLButtonElement>,
+    hero: HeroType
+  ) => {
+    event.stopPropagation();
+    try {
+      await deleteResource('hero/' + hero.id);
+      console.log('hero-list.js deleteHero: hero.id =', hero.id);
+      dispatch('deleteHero', hero.id);
+    } catch (e) {
+      console.error('hero-list.js deleteHero: e =', e);
+    }
+  };
 
   disabled = () => !this.props.newHeroName;
 
@@ -35,22 +51,22 @@ class HeroList extends Component<PropsType> {
 
   renderHero(hero) {
     return (
-      <div
-        className="hero"
-        key={hero.id}
-        onClick={() => showDetail(hero)}
-      >
+      <div className="hero" key={hero.id} onClick={() => showDetail(hero)}>
         <div className="hero-id">{hero.id}</div>
         <div className="hero-name">
           {hero.name}
-          <button onClick={() => this.deleteHero(hero)}>&#215;</button>
+          <button
+            className="delete-btn"
+            onClick={event => this.deleteHero(event, hero)}
+          >
+            &#215;
+          </button>
         </div>
       </div>
     );
   }
 
   render() {
-    console.log('hero-list.js render: entered');
     const {heroes} = this.props;
     return (
       <div className="hero-list">

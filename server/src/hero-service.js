@@ -1,5 +1,6 @@
 // @flow
 
+//import cors from 'cors';
 import sortBy from 'lodash/sortBy';
 import mySqlEasier from 'mysql-easier';
 
@@ -17,12 +18,13 @@ let conn; // database connection
 
 // This maps URLs to handler functions.
 export function heroService(app: express$Application): void {
+  //const theCors = cors({preflightContinue: true});
   const URL_PREFIX = '/hero';
-  app.delete(URL_PREFIX + '/:id', deleteHero);
+  app.delete(URL_PREFIX + '/:id', /*theCors,*/ deleteHero);
   app.get(URL_PREFIX, wrap(getAllHeroes));
   app.get(URL_PREFIX + '/:contains', wrap(filterHeroes));
   app.post(URL_PREFIX, wrap(postHero));
-  app.put(URL_PREFIX, wrap(putHero));
+  app.put(URL_PREFIX, /*theCors,*/ wrap(putHero));
 }
 
 export function deleteHero(req: express$Request): void {
@@ -74,7 +76,10 @@ function wrap(handler: HandlerType): HandlerType {
   return async (req: express$Request, res: express$Response) => {
     try {
       await setConn();
-      const result = await handler(req, res);
+      let result = await handler(req, res);
+      // Change numeric results to a string so
+      // Express won't think it is an HTTP status code.
+      if (typeof result === 'number') result = String(result);
       res.send(result);
     } catch (e) {
       // istanbul ignore next
