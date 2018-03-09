@@ -1,7 +1,15 @@
 // @flow
 
 import React, {Component} from 'react';
-import {dispatch, dispatchSet, Input, watch} from 'redux-easy';
+import {
+  dispatch,
+  dispatchMap,
+  dispatchPush,
+  dispatchSet,
+  Input,
+  watch
+} from 'redux-easy';
+import {putJson} from '../util/rest-util';
 
 import type {HeroType} from '../types';
 
@@ -12,36 +20,35 @@ type PropsType = {
   selectedHero: HeroType
 };
 
-function save() {
-  console.log('hero-detail.js save: not implemented yet');
-}
-
-export const showDetail = (hero: HeroType) =>
-  dispatch('selectHero', hero);
+export const showDetail = (hero: HeroType) => dispatch('selectHero', hero);
 
 class HeroDetail extends Component<PropsType> {
+  back = () => dispatchSet('route', this.props.previousRoute);
 
-  back = () =>
-    dispatchSet('route', this.props.previousRoute);
+  save = async () => {
+    const {id, name} = this.props.selectedHero;
+    try {
+      await putJson('hero/' + id, {name});
+      dispatchMap('heroes', hero => hero.id === id ? {...hero, name} : hero);
+      dispatchPush('messages', 'modified hero ' + name);
+    } catch (e) {
+      console.error('hero-detail.js save: e =', e);
+    }
+  }
 
   render() {
     const {selectedHero} = this.props;
-    dispatch('addMessage', 'in HeroDetail for ' + selectedHero.name);
     return (
       <div className="hero-detail">
-        <h2>
-          {selectedHero.name.toUpperCase()} Details
-        </h2>
-        <div className="id">
-          id: {selectedHero.id}
-        </div>
+        <h2>{selectedHero.name.toUpperCase()} Details</h2>
+        <div className="id">id: {selectedHero.id}</div>
         <div className="name">
           <label>Name:</label>
           <Input path="selectedHero.name" />
         </div>
         <div className="buttons">
           <button onClick={this.back}>Back</button>
-          <button onClick={save}>Save</button>
+          <button onClick={this.save}>Save</button>
         </div>
       </div>
     );

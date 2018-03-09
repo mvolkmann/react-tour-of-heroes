@@ -77,7 +77,7 @@ export async function post(urlSuffix: string): Promise<Object> {
 export async function postJson(
   urlSuffix: string,
   bodyObj: Object
-): Promise<Object> {
+): Promise<number> {
   const url = getUrlPrefix() + urlSuffix;
   const options = {
     method: 'POST',
@@ -87,8 +87,14 @@ export async function postJson(
     }
   };
   const res = await fetch(url, options);
-  if (!res.ok) handleError(res.statusText);
-  return res;
+
+  if (!res.ok) {
+    handleError(res.statusText);
+    return 0;
+  }
+
+  const newId = await res.text();
+  return Number(newId);
 }
 
 export async function putJson(

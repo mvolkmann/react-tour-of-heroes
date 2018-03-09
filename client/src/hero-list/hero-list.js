@@ -1,7 +1,7 @@
 // @flow
 
 import React, {Component} from 'react';
-import {dispatch, Input, watch} from 'redux-easy';
+import {dispatch, dispatchFilter, dispatchPush, Input, watch} from 'redux-easy';
 
 import {showDetail} from '../hero-detail/hero-detail';
 import type {HeroType} from '../types';
@@ -18,8 +18,9 @@ class HeroList extends Component<PropsType> {
   addHero = async () => {
     if (!this.disabled()) {
       const name = this.props.newHeroName;
-      await postJson('hero', {name});
-      dispatch('addHero');
+      const id = await postJson('hero', {name});
+      dispatch('addHero', id);
+      dispatchPush('messages', 'added hero ' + name);
     }
   };
 
@@ -28,10 +29,11 @@ class HeroList extends Component<PropsType> {
     hero: HeroType
   ) => {
     event.stopPropagation();
+    const {id, name} = hero;
     try {
-      await deleteResource('hero/' + hero.id);
-      console.log('hero-list.js deleteHero: hero.id =', hero.id);
-      dispatch('deleteHero', hero.id);
+      await deleteResource('hero/' + id);
+      dispatchFilter('heroes', hero => hero.id !== id);
+      dispatchPush('messages', 'delete hero ' + name);
     } catch (e) {
       console.error('hero-list.js deleteHero: e =', e);
     }

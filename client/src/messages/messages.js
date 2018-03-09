@@ -1,7 +1,7 @@
 // @flow
 
 import React, {Component} from 'react';
-import {dispatch, watch} from 'redux-easy';
+import {dispatchSet, watch} from 'redux-easy';
 
 import './messages.css';
 
@@ -18,7 +18,7 @@ const renderMessage = (message, index) => (
   </div>
 );
 
-const clear = () => dispatch('clearMessages');
+const clear = () => dispatchSet('messages', []);
 
 class Messages extends Component<PropsType> {
   render() {

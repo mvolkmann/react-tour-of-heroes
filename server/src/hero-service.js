@@ -24,7 +24,7 @@ export function heroService(app: express$Application): void {
   app.get(URL_PREFIX, wrap(getAllHeroes));
   app.get(URL_PREFIX + '/:contains', wrap(filterHeroes));
   app.post(URL_PREFIX, wrap(postHero));
-  app.put(URL_PREFIX, /*theCors,*/ wrap(putHero));
+  app.put(URL_PREFIX + '/:id', /*theCors,*/ wrap(putHero));
 }
 
 export function deleteHero(req: express$Request): void {
@@ -57,8 +57,8 @@ export function postHero(req: express$Request): Promise<number> {
 }
 
 export function putHero(req: express$Request): Promise<void> {
+  const {id} = req.params;
   const hero = ((req.body: any): HeroType);
-  const {id} = hero;
   delete hero.id;
   return conn.updateById('hero', id, hero);
 }

@@ -35,12 +35,11 @@
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.4",
-    "corser": "^2.0.1",
     "express": "^4.16.2",
     "express-healthcheck": "^0.1.0",
     "lodash": "^4.17.5",
     "morgan": "^1.9.0",
-    "mysql-easier": "^2.0.2"
+    "mysql-easier": "^2.0.3"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

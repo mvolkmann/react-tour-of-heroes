@@ -2,7 +2,6 @@
 
 import bodyParser from 'body-parser';
 import cors from 'cors';
-//import corser from 'corser';
 import express from 'express';
 import healthCheck from 'express-healthcheck';
 import morgan from 'morgan';
@@ -13,20 +12,13 @@ import {heroService} from './hero-service';
 
 const app = express();
 
+// Enable CORS pre-flight (needed for DELETE and PUT requests).
+app.options('*', cors());
+
 // Enable cross-origin resource sharing
 // so the web server on port 3000 can send
 // requests to the REST server on port 3001.
 app.use(cors());
-// Enable CORS pre-flight (needed for DELETE and PUT requests).
-//app.options('*', cors());
-//corser.simpleMethods.concat(['PUT', 'DELETE']);
-//app.use(corser.create());
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  next();
-});
 
 // This is only needed to serve static files.
 //app.use('/', express.static('public'));
