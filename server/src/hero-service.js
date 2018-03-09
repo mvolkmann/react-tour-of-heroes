@@ -1,6 +1,5 @@
 // @flow
 
-//import cors from 'cors';
 import sortBy from 'lodash/sortBy';
 import mySqlEasier from 'mysql-easier';
 
@@ -18,17 +17,18 @@ let conn; // database connection
 
 // This maps URLs to handler functions.
 export function heroService(app: express$Application): void {
-  //const theCors = cors({preflightContinue: true});
   const URL_PREFIX = '/hero';
-  app.delete(URL_PREFIX + '/:id', /*theCors,*/ deleteHero);
+  app.delete(URL_PREFIX + '/:id', wrap(deleteHero));
   app.get(URL_PREFIX, wrap(getAllHeroes));
+  app.get(URL_PREFIX + '/:id', wrap(getHeroById));
   app.get(URL_PREFIX + '/:contains', wrap(filterHeroes));
   app.post(URL_PREFIX, wrap(postHero));
-  app.put(URL_PREFIX + '/:id', /*theCors,*/ wrap(putHero));
+  app.put(URL_PREFIX + '/:id', wrap(putHero));
 }
 
-export function deleteHero(req: express$Request): void {
+export function deleteHero(req: express$Request): Promise<void> {
   conn.deleteById('hero', req.params.id);
+  return Promise.resolve(); // allows usage with wrap function
 }
 
 export async function filterHeroes(req: express$Request): Promise<HeroType[]> {

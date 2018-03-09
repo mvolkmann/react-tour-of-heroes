@@ -6,16 +6,11 @@ export async function deleteResource(urlSuffix: string): Promise<void> {
   const url = getUrlPrefix() + urlSuffix;
   const options = {
     method: 'DELETE',
-    headers: {
-      'Access-Control-Allow-Origin': '*'
-    }
+    mode: 'cors',
+    headers: {'Access-Control-Allow-Origin': '*'}
   };
-  console.log('rest-util.js deleteResource: url =', url);
   const res = await fetch(url, options);
-  console.log('rest-util.js deleteResource: res =', res);
-  if (!res.ok) {
-    return handleError(res.statusText);
-  }
+  if (!res.ok) handleError(res.statusText);
 }
 
 export async function getJson(urlSuffix: string): Promise<mixed> {

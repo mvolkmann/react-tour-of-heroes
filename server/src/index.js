@@ -12,6 +12,12 @@ import {heroService} from './hero-service';
 
 const app = express();
 
+// This causes logging of all HTTP requests to be written to stdout.
+// The provided options are combined, common, dev, short, and tiny.
+// For more details, browse https://github.com/expressjs/morgan.
+//app.use(morgan('common'));
+app.use(morgan('dev'));
+
 // Enable CORS pre-flight (needed for DELETE and PUT requests).
 app.options('*', cors());
 
@@ -31,12 +37,6 @@ app.use(bodyParser.text());
 
 //crudService(app, 'hero');
 heroService(app);
-
-// This causes logging of all HTTP requests to be written to stdout.
-// The provided options are combined, common, dev, short, and tiny.
-// For more details, browse https://github.com/expressjs/morgan.
-//app.use(morgan('dev'));
-app.use(morgan('common'));
 
 // To get uptime of server, browse localhost:3000.
 app.use(/^\/$/, healthCheck());
