@@ -5,9 +5,13 @@ import cors from 'cors';
 import express from 'express';
 import healthCheck from 'express-healthcheck';
 import morgan from 'morgan';
+import mySqlEasier from 'mysql-easier';
+
+// Configure database access.
+const config = require('../config.json');
+mySqlEasier.configure(config.db);
 
 //import crudService from './crud-service';
-import './database';
 import {heroService} from './hero-service';
 
 const app = express();
