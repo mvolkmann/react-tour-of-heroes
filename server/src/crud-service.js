@@ -53,7 +53,7 @@ export async function query(
   where: string
 ): Promise<Object[]> {
   const conn = await mySqlEasier.getConnection();
-  //TODO: Should we be concerned about SQL injection here?
+  //TODO: Need to protect against SQL injection here!
   const sql = `select * from ${tableName} where ${where}`;
   return conn.query(sql);
 }
