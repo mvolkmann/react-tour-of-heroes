@@ -33,7 +33,7 @@ class HeroList extends Component<PropsType> {
     try {
       await deleteResource('hero/' + id);
       dispatchFilter('heroes', hero => hero.id !== id);
-      dispatchPush('messages', 'delete hero ' + name);
+      dispatchPush('messages', 'deleted hero ' + name);
     } catch (e) {
       console.error('hero-list.js deleteHero: e =', e);
     }
