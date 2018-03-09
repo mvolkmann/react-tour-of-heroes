@@ -18,9 +18,6 @@ const app = express();
 //app.use(morgan('common'));
 app.use(morgan('dev'));
 
-// Enable CORS pre-flight (needed for DELETE and PUT requests).
-app.options('*', cors());
-
 // Enable cross-origin resource sharing
 // so the web server on port 3000 can send
 // requests to the REST server on port 3001.
@@ -38,9 +35,8 @@ app.use(bodyParser.text());
 //crudService(app, 'hero');
 heroService(app);
 
-// To get uptime of server, browse localhost:3000.
-app.use(/^\/$/, healthCheck());
+// To get uptime of server, browse localhost:3001.
+app.use(/^\//, healthCheck());
 
-const HOST = '0.0.0.0';
 const PORT = 3001; //process.argv.pop();
-app.listen(PORT, HOST, () => console.info('listening on', PORT));
+app.listen(PORT, () => console.info('listening on', PORT));
