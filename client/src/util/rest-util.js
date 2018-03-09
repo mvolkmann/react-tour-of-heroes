@@ -58,6 +58,7 @@ export async function patchJson(
   return res;
 }
 
+// For POST requests with no body
 export async function post(urlSuffix: string): Promise<Object> {
   const url = getUrlPrefix() + urlSuffix;
   const options = {method: 'POST'};
@@ -66,6 +67,7 @@ export async function post(urlSuffix: string): Promise<Object> {
   return res;
 }
 
+// For POST requests with a JSON body
 export async function postJson(
   urlSuffix: string,
   bodyObj: Object
