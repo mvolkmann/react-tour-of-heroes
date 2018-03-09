@@ -6,7 +6,6 @@ export async function deleteResource(urlSuffix: string): Promise<void> {
   const url = getUrlPrefix() + urlSuffix;
   const options = {
     method: 'DELETE',
-    mode: 'cors',
     headers: {'Access-Control-Allow-Origin': '*'}
   };
   const res = await fetch(url, options);
@@ -17,9 +16,7 @@ export async function getJson(urlSuffix: string): Promise<mixed> {
   const url = getUrlPrefix() + urlSuffix;
   const options = {method: 'GET'};
   const res = await fetch(url, options);
-  if (res.status !== OK) {
-    return handleError(res.statusText);
-  }
+  if (res.status !== OK) return handleError(res.statusText);
 
   const json = await res.json();
   return json;
