@@ -55,7 +55,7 @@ describe('hero-service', () => {
     const {id, name} = hero;
     const newName = name.toUpperCase();
     hero.name = newName;
-    let req = (({body: hero}: any): express$Request);
+    let req = (({body: hero, params: {id}}: any): express$Request);
     await putHero(req);
 
     req = (({params: {id}}: any): express$Request);

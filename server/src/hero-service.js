@@ -6,12 +6,15 @@ import mySqlEasier from 'mysql-easier';
 import {errorHandler} from './util/error-util';
 import {castObject} from './util/flow-util';
 
-import type {HeroType} from './types';
-
 type HandlerType = (
   req: express$Request,
   res: express$Response
 ) => Promise<mixed>;
+
+export type HeroType = {
+  id: number,
+  name: string
+};
 
 let conn; // database connection
 
