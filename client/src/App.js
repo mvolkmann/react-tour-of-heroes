@@ -6,6 +6,7 @@ import Dashboard from './dashboard/dashboard';
 import HeroDetail from './hero-detail/hero-detail';
 import HeroList from './hero-list/hero-list';
 import Messages from './messages/messages';
+import {getJson} from './util/rest-util';
 
 import './App.css';
 
@@ -20,6 +21,12 @@ const routeMap = {
 };
 
 class App extends Component<PropsType> {
+  async componentDidMount() {
+    console.log('App.js componentDidMount: entered');
+    const heroes = await getJson('hero');
+    dispatchSet('heroes', heroes);
+  }
+
   getButtons() {
     return (
       <div className="buttons">
