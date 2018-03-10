@@ -4,13 +4,13 @@ import React, {Component} from 'react';
 import {dispatch, dispatchFilter, dispatchPush, Input, watch} from 'redux-easy';
 
 import {showDetail} from '../hero-detail/hero-detail';
-import type {HeroType} from '../types';
+import {type HeroMapType, type HeroType, heroMapToList} from '../types';
 import {deleteResource, postJson} from '../util/rest-util';
 
 import './hero-list.css';
 
 type PropsType = {
-  heroes: HeroType[],
+  heroes: HeroMapType,
   newHeroName: string
 };
 
@@ -70,11 +70,12 @@ class HeroList extends Component<PropsType> {
 
   render() {
     const {heroes} = this.props;
+    const heroList = heroMapToList(heroes);
     return (
       <div className="hero-list">
         <h2>My Heroes</h2>
         {this.getAddForm()}
-        {heroes.map(hero => this.renderHero(hero))}
+        {heroList.map(hero => this.renderHero(hero))}
       </div>
     );
   }

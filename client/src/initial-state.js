@@ -3,7 +3,7 @@
 import type {StateType} from './types';
 
 const initialState: StateType = {
-  heroes: [],
+  heroes: {},
   messages: [],
   newHeroName: '',
   previousRoute: '',

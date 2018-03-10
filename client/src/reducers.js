@@ -9,7 +9,7 @@ addReducer('addHero',
     const newHero = {id, name: newHeroName};
     return {
       ...state,
-      heroes: [...heroes, newHero],
+      heroes: {...heroes, [id]: newHero},
       newHeroName: ''
     };
   }

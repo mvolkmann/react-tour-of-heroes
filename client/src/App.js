@@ -8,6 +8,8 @@ import HeroList from './hero-list/hero-list';
 import Messages from './messages/messages';
 import {getJson} from './util/rest-util';
 
+import {type HeroType, heroListToMap} from './types';
+
 import './App.css';
 
 type PropsType = {
@@ -22,9 +24,8 @@ const routeMap = {
 
 class App extends Component<PropsType> {
   async componentDidMount() {
-    console.log('App.js componentDidMount: entered');
-    const heroes = await getJson('hero');
-    dispatchSet('heroes', heroes);
+    const heroes = ((await getJson('hero'): any): HeroType[]);
+    dispatchSet('heroes', heroListToMap(heroes));
   }
 
   getButtons() {

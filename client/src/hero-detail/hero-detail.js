@@ -3,7 +3,6 @@
 import React, {Component} from 'react';
 import {
   dispatch,
-  dispatchMap,
   dispatchPush,
   dispatchSet,
   Input,
@@ -26,10 +25,11 @@ class HeroDetail extends Component<PropsType> {
   back = () => dispatchSet('route', this.props.previousRoute);
 
   save = async () => {
-    const {id, name} = this.props.selectedHero;
+    const {selectedHero} = this.props;
+    const {id, name} = selectedHero;
     try {
       await putJson('hero/' + id, {name});
-      dispatchMap('heroes', hero => hero.id === id ? {...hero, name} : hero);
+      dispatchSet(`heroes.${id}`, {...selectedHero, name});
       dispatchPush('messages', 'modified hero ' + name);
     } catch (e) {
       console.error('hero-detail.js save: e =', e);
