@@ -4,6 +4,7 @@ import {OK, handleError} from '../util/error-util';
 
 export async function deleteResource(urlSuffix: string): Promise<void> {
   const url = getUrlPrefix() + urlSuffix;
+  //TODO: Why is this needed for DELETE, but not for other methods?
   const options = {
     method: 'DELETE',
     headers: {'Access-Control-Allow-Origin': '*'}
