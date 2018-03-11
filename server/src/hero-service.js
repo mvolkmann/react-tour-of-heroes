@@ -59,11 +59,11 @@ export function postHero(req: express$Request): Promise<number> {
   return conn.insert('hero', {name});
 }
 
-export function putHero(req: express$Request): Promise<void> {
+export async function putHero(req: express$Request): Promise<void> {
   const {id} = req.params;
   const hero = ((req.body: any): HeroType);
   delete hero.id;
-  return conn.updateById('hero', id, hero);
+  await conn.updateById('hero', id, hero);
 }
 
 // This is needed by tests since they call functions
