@@ -1,7 +1,7 @@
 // @flow
 
 import React, {Component} from 'react';
-import {dispatch, dispatchFilter, dispatchPush, Input, watch} from 'redux-easy';
+import {dispatch, dispatchDelete, dispatchPush, Input, watch} from 'redux-easy';
 
 import {showDetail} from '../hero-detail/hero-detail';
 import {type HeroMapType, type HeroType, heroMapToList} from '../types';
@@ -32,7 +32,7 @@ class HeroList extends Component<PropsType> {
     const {id, name} = hero;
     try {
       await deleteResource('hero/' + id);
-      dispatchFilter('heroes', hero => hero.id !== id);
+      dispatchDelete(`heroes.${id}`);
       dispatchPush('messages', 'deleted hero ' + name);
     } catch (e) {
       console.error('hero-list.js deleteHero: e =', e);
