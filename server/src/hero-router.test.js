@@ -8,12 +8,12 @@ import {
   postHero,
   putHero,
   setConn
-} from './hero-service';
+} from './hero-router';
 import './database';
 
 // These tests assume the database is the state
 // produced by running "npm run dbsetup".
-describe('hero-service', () => {
+describe('hero-router', () => {
   beforeEach(setConn);
 
   test('getAllHeroes, deleteHero, and postHero', async () => {

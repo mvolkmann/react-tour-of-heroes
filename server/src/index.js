@@ -8,7 +8,7 @@ import morgan from 'morgan';
 import './database';
 
 //import crudService from './crud-service';
-import heroService from './hero-service';
+import heroRouter from './hero-router';
 
 const app = express();
 
@@ -62,7 +62,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.text());
 
 //crudService(app, 'hero');
-app.use('/hero', heroService);
+app.use('/hero', heroRouter);
 
 // To get uptime of server, browse localhost:3001.
 app.use(/^\//, healthCheck());
