@@ -2,6 +2,8 @@
 
 import {OK, handleError} from '../util/error-util';
 
+const token = 'magic token';
+
 export async function deleteResource(urlSuffix: string): Promise<void> {
   const url = getUrlPrefix() + urlSuffix;
   //TODO: Why is this needed for DELETE, but not for other methods?
@@ -15,7 +17,10 @@ export async function deleteResource(urlSuffix: string): Promise<void> {
 
 export async function getJson(urlSuffix: string): Promise<mixed> {
   const url = getUrlPrefix() + urlSuffix;
-  const options = {method: 'GET'};
+  const options = {
+    method: 'GET',
+    headers: {Authorization: token}
+  };
   const res = await fetch(url, options);
   if (res.status !== OK) return handleError(res.statusText);
 

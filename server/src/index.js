@@ -12,6 +12,23 @@ import {heroService} from './hero-service';
 
 const app = express();
 
+// A custom middleware function
+function authenticate(
+  req: express$Request,
+  res: express$Response,
+  next: express$NextFunction
+): void {
+  const auth = req.get('Authorization');
+  console.log('index.js authenticate: auth =', auth);
+  if (auth !== 'magic token') {
+    res.status(401).send('Unauthorized');
+    return;
+  }
+  next();
+}
+// Authenticate every path.
+//app.use('*', authenticate);
+
 /* TODO: Do you need this?
 function noCache(req, res, next) {
   res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
