@@ -24,7 +24,7 @@ export function heroService(app: express$Application): void {
   app.delete(URL_PREFIX + '/:id', wrap(deleteHero));
   app.get(URL_PREFIX, wrap(getAllHeroes));
   app.get(URL_PREFIX + '/:id', wrap(getHeroById));
-  app.get(URL_PREFIX + '/:contains', wrap(filterHeroes));
+  app.get(URL_PREFIX + '/contains/:contains', wrap(filterHeroes));
   app.post(URL_PREFIX, wrap(postHero));
   app.put(URL_PREFIX + '/:id', wrap(putHero));
 }
@@ -36,7 +36,8 @@ export function deleteHero(req: express$Request): Promise<void> {
 
 export async function filterHeroes(req: express$Request): Promise<HeroType[]> {
   const {contains} = req.params;
-  const sql = `select * from hero where name like "%${contains}%"`;
+  let sql = 'select * from hero';
+  if (contains) sql += ` where name like "%${contains}%"`;
   const heroes = await conn.query(sql);
   return sortBy(heroes, ['name']);
 }
@@ -78,8 +79,10 @@ export async function setConn(): Promise<void> {
 function wrap(handler: HandlerType): HandlerType {
   return async (req: express$Request, res: express$Response) => {
     try {
+      //TODO: Why does this hang on the 11th call if done is not called on conn?
       await setConn();
       let result = await handler(req, res);
+      await conn.done();
       // Change numeric results to a string so
       // Express won't think it is an HTTP status code.
       if (typeof result === 'number') result = String(result);

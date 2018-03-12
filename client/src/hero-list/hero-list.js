@@ -1,11 +1,18 @@
 // @flow
 
 import React, {Component} from 'react';
-import {dispatch, dispatchDelete, dispatchPush, Input, watch} from 'redux-easy';
+import {
+  dispatch,
+  dispatchDelete,
+  dispatchPush,
+  dispatchSet,
+  Input,
+  watch
+} from 'redux-easy';
 
 import {showDetail} from '../hero-detail/hero-detail';
 import {type HeroMapType, type HeroType, heroMapToList} from '../types';
-import {deleteResource, postJson} from '../util/rest-util';
+import {deleteResource, getJson, postJson} from '../util/rest-util';
 
 import './hero-list.css';
 
@@ -16,13 +23,36 @@ type PropsType = {
 
 class HeroList extends Component<PropsType> {
   addHero = async () => {
-    if (!this.disabled()) {
+    if (this.canAdd()) {
+      // Restore collection of heroes.
+      const heroes = await getJson('hero');
+      dispatchSet('heroes', heroes);
+
+      // Add a new hero.
       const name = this.props.newHeroName;
       const id = await postJson('hero', {name});
       dispatch('addHero', id);
+
       dispatchPush('messages', 'added hero ' + name);
     }
   };
+
+  /**
+   * The user can add a hero if they have entered a name
+   * and that name doesn't match an existing hero.
+   * Since we filter the list based on the name entered,
+   * we know the name matches an existing hero
+   * if there are any heroes in the list.
+   */
+  canAdd = () => {
+    const {heroes, newHeroName} = this.props;
+    if (!newHeroName) return false;
+
+    const heroList = heroMapToList(heroes);
+    const matchesExisting = heroList.find(hero => hero.name === newHeroName);
+    return !matchesExisting;
+    //return newHeroName && Object.keys(heroes).length === 0;
+  }
 
   deleteHero = async (
     event: SyntheticInputEvent<HTMLButtonElement>,
@@ -39,13 +69,25 @@ class HeroList extends Component<PropsType> {
     }
   };
 
-  disabled = () => !this.props.newHeroName;
+  filterList = () => {
+  //filterList = async event => {
+    /*
+    const {value} = event.target;
+    const path = value ? 'hero/contains/' + value : 'hero';
+    const heroes = await getJson(path);
+    dispatchSet('heroes', heroes);
+    */
+  };
 
   getAddForm = () => (
     <div className="add-form">
       <label>Hero Name:</label>
-      <Input path="newHeroName" onEnter={this.addHero} />
-      <button disabled={this.disabled()} onClick={this.addHero}>
+      <Input
+        path="newHeroName"
+        onChange={this.filterList}
+        onEnter={this.addHero}
+      />
+      <button disabled={!this.canAdd()} onClick={this.addHero}>
         Add
       </button>
     </div>

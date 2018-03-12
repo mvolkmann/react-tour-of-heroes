@@ -12,6 +12,16 @@ import {heroService} from './hero-service';
 
 const app = express();
 
+/* TODO: Do you need this?
+function noCache(req, res, next) {
+  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  res.header('Expires', '-1');
+  res.header('Pragma', 'no-cache');
+  next();
+}
+app.use('*', noCache);
+*/
+
 // This causes logging of all HTTP requests to be written to stdout.
 // The provided options are combined, common, dev, short, and tiny.
 // For more details, browse https://github.com/expressjs/morgan.
