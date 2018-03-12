@@ -8,10 +8,11 @@ import morgan from 'morgan';
 import './database';
 
 //import crudService from './crud-service';
-import {heroService} from './hero-service';
+import heroService from './hero-service';
 
 const app = express();
 
+/*
 // A custom middleware function
 function authenticate(
   req: express$Request,
@@ -27,7 +28,8 @@ function authenticate(
   next();
 }
 // Authenticate every path.
-//app.use('*', authenticate);
+app.use('*', authenticate);
+*/
 
 /* TODO: Do you need this?
 function noCache(req, res, next) {
@@ -60,7 +62,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.text());
 
 //crudService(app, 'hero');
-heroService(app);
+app.use('/hero', heroService);
 
 // To get uptime of server, browse localhost:3001.
 app.use(/^\//, healthCheck());

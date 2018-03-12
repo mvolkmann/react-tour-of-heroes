@@ -6,6 +6,10 @@ import mySqlEasier from 'mysql-easier';
 import {errorHandler} from './util/error-util';
 import {castObject} from './util/flow-util';
 
+import express from 'express';
+
+const router = express.Router();
+
 type HandlerType = (
   req: express$Request,
   res: express$Response
@@ -19,15 +23,12 @@ export type HeroType = {
 let conn; // database connection
 
 // This maps URLs to handler functions.
-export function heroService(app: express$Application): void {
-  const URL_PREFIX = '/hero';
-  app.delete(URL_PREFIX + '/:id', wrap(deleteHero));
-  app.get(URL_PREFIX, wrap(getAllHeroes));
-  app.get(URL_PREFIX + '/:id', wrap(getHeroById));
-  app.get(URL_PREFIX + '/contains/:contains', wrap(filterHeroes));
-  app.post(URL_PREFIX, wrap(postHero));
-  app.put(URL_PREFIX + '/:id', wrap(putHero));
-}
+router.delete('/:id', wrap(deleteHero));
+router.get('/', wrap(getAllHeroes));
+router.get('/:id', wrap(getHeroById));
+router.get('/contains/:contains', wrap(filterHeroes));
+router.post('/', wrap(postHero));
+router.put('/:id', wrap(putHero));
 
 export function deleteHero(req: express$Request): Promise<void> {
   conn.deleteById('hero', req.params.id);
@@ -79,7 +80,6 @@ export async function setConn(): Promise<void> {
 function wrap(handler: HandlerType): HandlerType {
   return async (req: express$Request, res: express$Response) => {
     try {
-      //TODO: Why does this hang on the 11th call if done is not called on conn?
       await setConn();
       let result = await handler(req, res);
       await conn.done();
@@ -93,3 +93,5 @@ function wrap(handler: HandlerType): HandlerType {
     }
   };
 }
+
+export default router;
