@@ -2,26 +2,43 @@
 
 import {OK, handleError} from '../util/error-util';
 
-const token = 'magic token';
+type MethodType = 'DELETE' | 'GET' | 'PATCH' | 'POST' | 'PUT';
+type OptionsType = {
+  body?: mixed,
+  headers: Object,
+  method: MethodType
+};
+
+const methodsWithBody = ['POST', 'PUT', 'PATCH'];
+function myFetch(method: MethodType, url: string, body?: mixed) {
+  const options: OptionsType = {
+    method,
+    headers: {
+      Authorization: 'magic token'
+    }
+  };
+  if (methodsWithBody.includes(method)) {
+    options.body = body ? JSON.stringify(body) : undefined;
+    options.headers['Content-Type'] = 'application/json';
+  }
+  if (method === 'DELETE') {
+    //TODO: Why needed for DELETE, but not other methods?
+    options.headers['Access-Control-Allow-Origin'] = '*';
+  }
+
+  // $FlowFixMe
+  return fetch(url, options);
+}
 
 export async function deleteResource(urlSuffix: string): Promise<void> {
   const url = getUrlPrefix() + urlSuffix;
-  //TODO: Why is this needed for DELETE, but not for other methods?
-  const options = {
-    method: 'DELETE',
-    headers: {'Access-Control-Allow-Origin': '*'}
-  };
-  const res = await fetch(url, options);
+  const res = await myFetch('DELETE', url);
   if (!res.ok) handleError(res.statusText);
 }
 
 export async function getJson(urlSuffix: string): Promise<mixed> {
   const url = getUrlPrefix() + urlSuffix;
-  const options = {
-    method: 'GET',
-    headers: {Authorization: token}
-  };
-  const res = await fetch(url, options);
+  const res = await myFetch('GET', url);
   if (res.status !== OK) return handleError(res.statusText);
 
   const json = await res.json();
@@ -30,11 +47,8 @@ export async function getJson(urlSuffix: string): Promise<mixed> {
 
 export async function getText(urlSuffix: string): Promise<mixed> {
   const url = getUrlPrefix() + urlSuffix;
-  const options = {method: 'GET'};
-  const res = await fetch(url, options);
-  if (res.status !== OK) {
-    return handleError(res.statusText);
-  }
+  const res = await myFetch('GET', url);
+  if (res.status !== OK) return handleError(res.statusText);
 
   const text = await res.text();
   return text;
@@ -49,17 +63,10 @@ export function getUrlPrefix() {
 
 export async function patchJson(
   urlSuffix: string,
-  bodyObj: Object
+  body: Object
 ): Promise<Object> {
   const url = getUrlPrefix() + urlSuffix;
-  const options = {
-    method: 'PATCH',
-    body: JSON.stringify(bodyObj),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-  const res = await fetch(url, options);
+  const res = await myFetch('PATCH', url, body);
   if (!res.ok) handleError(res.statusText);
   return res;
 }
@@ -67,8 +74,7 @@ export async function patchJson(
 // For POST requests with no body
 export async function post(urlSuffix: string): Promise<Object> {
   const url = getUrlPrefix() + urlSuffix;
-  const options = {method: 'POST'};
-  const res = await fetch(url, options);
+  const res = await myFetch('POST', url);
   if (!res.ok) handleError(res.statusText);
   return res;
 }
@@ -76,17 +82,10 @@ export async function post(urlSuffix: string): Promise<Object> {
 // For POST requests with a JSON body
 export async function postJson(
   urlSuffix: string,
-  bodyObj: Object
+  body: Object
 ): Promise<number> {
   const url = getUrlPrefix() + urlSuffix;
-  const options = {
-    method: 'POST',
-    body: JSON.stringify(bodyObj),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-  const res = await fetch(url, options);
+  const res = await myFetch('POST', url, body);
 
   if (!res.ok) {
     handleError(res.statusText);
@@ -99,17 +98,10 @@ export async function postJson(
 
 export async function putJson(
   urlSuffix: string,
-  bodyObj?: Object = {}
+  body?: Object = {}
 ): Promise<Object> {
   const url = getUrlPrefix() + urlSuffix;
-  const options = {
-    method: 'PUT',
-    body: JSON.stringify(bodyObj),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  };
-  const res = await fetch(url, options);
+  const res = await myFetch('PUT', url, body);
   if (!res.ok) handleError(res.statusText);
   return res;
 }

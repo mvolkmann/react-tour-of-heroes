@@ -12,16 +12,15 @@ import heroRouter from './hero-router';
 
 const app = express();
 
-/*
 // A custom middleware function
 function authenticate(
   req: express$Request,
   res: express$Response,
   next: express$NextFunction
 ): void {
-  const auth = req.get('Authorization');
-  console.log('index.js authenticate: auth =', auth);
-  if (auth !== 'magic token') {
+  // Don't require authentication for OPTIONS requests.
+  if (req.method !== 'OPTIONS' &&
+    req.get('Authorization') !== 'magic token') {
     res.status(401).send('Unauthorized');
     return;
   }
@@ -29,17 +28,6 @@ function authenticate(
 }
 // Authenticate every path.
 app.use('*', authenticate);
-*/
-
-/* TODO: Do you need this?
-function noCache(req, res, next) {
-  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-  res.header('Expires', '-1');
-  res.header('Pragma', 'no-cache');
-  next();
-}
-app.use('*', noCache);
-*/
 
 // This causes logging of all HTTP requests to be written to stdout.
 // The provided options are combined, common, dev, short, and tiny.
