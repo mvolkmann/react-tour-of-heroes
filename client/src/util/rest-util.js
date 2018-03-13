@@ -9,7 +9,6 @@ type OptionsType = {
   method: MethodType
 };
 
-const methodsWithBody = ['POST', 'PUT', 'PATCH'];
 function myFetch(method: MethodType, url: string, body?: mixed) {
   const options: OptionsType = {
     method,
@@ -17,9 +16,12 @@ function myFetch(method: MethodType, url: string, body?: mixed) {
       Authorization: 'magic token'
     }
   };
-  if (methodsWithBody.includes(method)) {
-    options.body = body ? JSON.stringify(body) : undefined;
-    options.headers['Content-Type'] = 'application/json';
+  if (body !== undefined) {
+    const isObject = typeof body === 'object';
+    options.body = isObject ? JSON.stringify(body) : body;
+    options.headers['Content-Type'] = isObject
+      ? 'application/json'
+      : 'text/plain';
   }
   if (method === 'DELETE') {
     //TODO: Why needed for DELETE, but not other methods?
