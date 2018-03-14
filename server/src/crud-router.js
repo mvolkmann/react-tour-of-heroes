@@ -1,6 +1,8 @@
 // @flow
 
+import express from 'express';
 import mySqlEasier from 'mysql-easier';
+
 import {errorHandler} from './util/error-util';
 import {cast, castString} from './util/flow-util';
 
@@ -37,15 +39,25 @@ export async function patch(
   changes: Object
 ): Promise<Object> {
   const conn = await mySqlEasier.getConnection();
-  const type = await conn.getById(tableName, id);
-  const newType = {...type, ...changes};
-  await conn.updateById(tableName, id, newType);
-  return newType;
+  const obj = await conn.getById(tableName, id);
+  const newObj = {...obj, ...changes};
+  await conn.updateById(tableName, id, newObj);
+  return newObj;
 }
 
+// Returns id of new row.
 export async function post(tableName: string, data: Object): Promise<number> {
   const conn = await mySqlEasier.getConnection();
   return conn.insert(tableName, data);
+}
+
+export async function put(
+  tableName: string,
+  id: number,
+  newObj: Object
+): Promise<void> {
+  const conn = await mySqlEasier.getConnection();
+  await conn.updateById(tableName, id, newObj);
 }
 
 export async function query(
@@ -65,10 +77,8 @@ export async function query(
  * 2) The table must have an "id" column
  *    that is an "int auto_increment primary key".
  */
-export default function crudService(
-  app: express$Application,
-  tableName: string
-) {
+export default function getCrudRouter(tableName: string) {
+
   /**
    * This code works, but should it be provided?
    */
@@ -133,8 +143,8 @@ export default function crudService(
     const id = Number(req.params.id);
     const changes = cast(req.body, Object);
     try {
-      const newType = await patch(tableName, id, changes);
-      res.status(OK).send(JSON.stringify(newType));
+      const newObj = await patch(tableName, id, changes);
+      res.status(OK).send(JSON.stringify(newObj));
     } catch (e) {
       // istanbul ignore next
       errorHandler(res, e);
@@ -147,8 +157,23 @@ export default function crudService(
   ): Promise<void> {
     try {
       const body = cast(req.body, Object);
-      const rows = await post(tableName, body);
-      res.send(JSON.stringify(rows));
+      const id = await post(tableName, body);
+      res.send(JSON.stringify(id));
+    } catch (e) {
+      // istanbul ignore next
+      errorHandler(res, e);
+    }
+  }
+
+  async function putHandler(
+    req: express$Request,
+    res: express$Response
+  ): Promise<void> {
+    const id = Number(req.params.id);
+    const newVersion = cast(req.body, Object);
+    try {
+      const newObj = await put(tableName, id, newVersion);
+      res.status(OK).send(JSON.stringify(newObj));
     } catch (e) {
       // istanbul ignore next
       errorHandler(res, e);
@@ -169,12 +194,16 @@ export default function crudService(
     }
   }
 
+  const router = express.Router();
   const URL_PREFIX = '/' + tableName;
-  app.delete(URL_PREFIX, deleteAllHandler);
-  app.delete(URL_PREFIX + '/:id', deleteByIdHandler);
-  app.get(URL_PREFIX, getAllHandler);
-  app.get(URL_PREFIX + '/query', queryHandler);
-  app.get(URL_PREFIX + '/:id', getByIdHandler);
-  app.patch(URL_PREFIX + '/:id', patchHandler);
-  app.post(URL_PREFIX, postHandler);
+  router.delete(URL_PREFIX, deleteAllHandler);
+  router.delete(URL_PREFIX + '/:id', deleteByIdHandler);
+  router.get(URL_PREFIX, getAllHandler);
+  router.get(URL_PREFIX + '/query', queryHandler);
+  router.get(URL_PREFIX + '/:id', getByIdHandler);
+  router.patch(URL_PREFIX + '/:id', patchHandler);
+  router.post(URL_PREFIX, postHandler);
+  router.put(URL_PREFIX + '/:id', putHandler);
+
+  return router;
 }

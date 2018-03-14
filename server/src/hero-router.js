@@ -1,14 +1,11 @@
 // @flow
 
+import express from 'express';
 import sortBy from 'lodash/sortBy';
 import mySqlEasier from 'mysql-easier';
 
 import {errorHandler} from './util/error-util';
 import {castObject} from './util/flow-util';
-
-import express from 'express';
-
-const router = express.Router();
 
 type HandlerType = (
   req: express$Request,
@@ -23,6 +20,7 @@ export type HeroType = {
 let conn; // database connection
 
 // This maps URLs to handler functions.
+const router = express.Router();
 router.delete('/:id', wrap(deleteHero));
 router.get('/', wrap(getAllHeroes));
 router.get('/:id', wrap(getHeroById));

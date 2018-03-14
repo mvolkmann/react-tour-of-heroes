@@ -7,7 +7,7 @@ import healthCheck from 'express-healthcheck';
 import morgan from 'morgan';
 import './database';
 
-//import crudService from './crud-service';
+import getCrudRouter from './crud-router';
 import heroRouter from './hero-router';
 
 const app = express();
@@ -26,8 +26,8 @@ function authenticate(
   }
   next();
 }
-// Authenticate every path.
-app.use('*', authenticate);
+// Authenticate only routes that start with /hero.
+app.use('/hero', authenticate);
 
 // This causes logging of all HTTP requests to be written to stdout.
 // The provided options are combined, common, dev, short, and tiny.
@@ -51,6 +51,7 @@ app.use(bodyParser.text());
 
 //crudService(app, 'hero');
 app.use('/hero', heroRouter);
+app.use('/crud', getCrudRouter('hero'));
 
 // To get uptime of server, browse localhost:3001.
 app.use(/^\//, healthCheck());
