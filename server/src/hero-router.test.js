@@ -2,7 +2,7 @@
 
 import {
   deleteHero,
-  filterHeroes,
+  //filterHeroes,
   getAllHeroes,
   getHeroById,
   postHero,
@@ -38,6 +38,7 @@ describe('hero-router', () => {
     expect(id).toBeGreaterThan(0);
   });
 
+  /*
   test('filterHeroes', async () => {
     const req = (({params: {contains: 'ag'}}: any): express$Request);
     const heroes = await filterHeroes(req);
@@ -45,6 +46,7 @@ describe('hero-router', () => {
     expect(heroes[0].name).toBe('Magma');
     expect(heroes[1].name).toBe('Magneta');
   });
+  */
 
   test('putHero', async () => {
     const heroes = await getAllHeroes();
