@@ -1,17 +1,16 @@
 {
-  "name": "server",
+  "name": "tour-of-heroes-server",
   "version": "1.0.0",
   "description": "REST server for React Tour of Heroes",
   "main": "index.js",
+  "author": "R. Mark Volkmann <r.mark.volkmann@gmail.com> (https://mvolkmann.github.io/)",
+  "license": "MIT",
   "scripts": {
     "build": "babel -q src -d build",
     "dbi": "mysql -uroot -proot -Dtour_of_heroes",
     "dbsetup": "mysql -uroot -proot < ./ddl.sql",
-    "dbsetupw": "mysql -uroot -proot < ./ddl.sql",
     "dbstart": "mysql.server start",
-    "dbstartw": "mysqld start",
     "dbstop": "mysql.server stop",
-    "dbstopw": "mysqld stop",
     "cover": "CI=true npm test -- --coverage",
     "cover-open": "open coverage/lcov-report/index.html",
     "flow": "flow",
@@ -34,8 +33,6 @@
       }
     }
   },
-  "author": "R. Mark Volkmann <r.mark.volkmann@gmail.com> (https://mvolkmann.github.io/)",
-  "license": "MIT",
   "dependencies": {
     "cors": "^2.8.4",
     "express": "^4.16.2",

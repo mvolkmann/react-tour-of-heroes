@@ -12,23 +12,6 @@ import heroRouter from './hero-router';
 
 const app = express();
 
-// A custom middleware function
-function authenticate(
-  req: express$Request,
-  res: express$Response,
-  next: express$NextFunction
-): void {
-  // Don't require authentication for OPTIONS requests.
-  if (req.method !== 'OPTIONS' &&
-    req.get('Authorization') !== 'magic token') {
-    res.status(401).send('Unauthorized');
-    return;
-  }
-  next();
-}
-// Authenticate only routes that start with /hero.
-app.use('/hero', authenticate);
-
 // This causes logging of all HTTP requests to be written to stdout.
 // The provided options are combined, common, dev, short, and tiny.
 // For more details, browse https://github.com/expressjs/morgan.

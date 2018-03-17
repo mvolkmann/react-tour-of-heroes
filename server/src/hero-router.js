@@ -24,21 +24,12 @@ const router = express.Router();
 router.delete('/:id', wrap(deleteHero));
 router.get('/', wrap(getAllHeroes));
 router.get('/:id', wrap(getHeroById));
-router.get('/contains/:contains', wrap(filterHeroes));
 router.post('/', wrap(postHero));
 router.put('/:id', wrap(putHero));
 
 export function deleteHero(req: express$Request): Promise<void> {
   conn.deleteById('hero', req.params.id);
   return Promise.resolve(); // allows usage with wrap function
-}
-
-export async function filterHeroes(req: express$Request): Promise<HeroType[]> {
-  const {contains} = req.params;
-  let sql = 'select * from hero';
-  if (contains) sql += ` where name like "%${contains}%"`;
-  const heroes = await conn.query(sql);
-  return sortBy(heroes, ['name']);
 }
 
 export async function getAllHeroes(): Promise<HeroType[]> {
