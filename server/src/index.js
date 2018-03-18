@@ -39,22 +39,5 @@ app.use('/crud', getCrudRouter('hero'));
 // To get uptime of server, browse localhost:3001.
 app.use(/^\//, healthCheck());
 
-/*
-// Error-handling middleware functions must be
-// registered after all other middleware and
-// must take four parameters rather than three
-// where the first is the error.
-function errorHandler(err, req, res, next) {
-  if (err) {
-    console.log('index.js errorHandler: err =', err);
-    res.status(500).send(err);
-  } else {
-    next();
-  }
-}
-// $FlowFixMe
-app.use(errorHandler);
-*/
-
 const PORT = 3001; //process.argv.pop();
 app.listen(PORT, () => console.info('listening on', PORT));
