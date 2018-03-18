@@ -9,7 +9,8 @@ import {castObject} from './util/flow-util';
 
 type HandlerType = (
   req: express$Request,
-  res: express$Response
+  res: express$Response,
+  next: express$NextFunction
 ) => Promise<mixed>;
 
 export type HeroType = {
@@ -38,6 +39,7 @@ export async function getAllHeroes(): Promise<HeroType[]> {
 }
 
 export function getHeroById(req: express$Request): Promise<HeroType> {
+  //throw new Error('demo error handling');
   const {id} = req.params;
   return conn.getById('hero', id);
 }
@@ -67,10 +69,14 @@ export async function setConn(): Promise<void> {
 // and provides common error handling
 // for all the REST services defined here.
 function wrap(handler: HandlerType): HandlerType {
-  return async (req: express$Request, res: express$Response) => {
+  return async (
+    req: express$Request,
+    res: express$Response,
+    next: express$NextFunction
+  ) => {
     try {
       await setConn();
-      let result = await handler(req, res);
+      let result = await handler(req, res, next);
       await conn.done();
       // Change numeric results to a string so
       // Express won't think it is an HTTP status code.
@@ -78,7 +84,7 @@ function wrap(handler: HandlerType): HandlerType {
       res.send(result);
     } catch (e) {
       // istanbul ignore next
-      errorHandler(res, e);
+      errorHandler(next, e);
     }
   };
 }

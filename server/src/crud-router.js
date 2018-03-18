@@ -84,20 +84,22 @@ export default function getCrudRouter(tableName: string) {
    */
   async function deleteAllHandler(
     req: express$Request,
-    res: express$Response
+    res: express$Response,
+    next: express$NextFunction
   ): Promise<void> {
     try {
       await deleteAll(tableName);
       res.send();
     } catch (e) {
       // istanbul ignore next
-      errorHandler(res, e);
+      errorHandler(next, e);
     }
   }
 
   async function deleteByIdHandler(
     req: express$Request,
-    res: express$Response
+    res: express$Response,
+    next: express$NextFunction
   ): Promise<void> {
     const id = Number(req.params.id);
     try {
@@ -105,26 +107,28 @@ export default function getCrudRouter(tableName: string) {
       res.send(String(affectedRows));
     } catch (e) {
       // istanbul ignore next
-      errorHandler(res, e);
+      errorHandler(next, e);
     }
   }
 
   async function getAllHandler(
     req: express$Request,
-    res: express$Response
+    res: express$Response,
+    next: express$NextFunction
   ): Promise<void> {
     try {
       const rows = await getAll(tableName);
       res.send(JSON.stringify(rows));
     } catch (e) {
       // istanbul ignore next
-      errorHandler(res, e);
+      errorHandler(next, e);
     }
   }
 
   async function getByIdHandler(
     req: express$Request,
-    res: express$Response
+    res: express$Response,
+    next: express$NextFunction
   ): Promise<void> {
     const id = Number(req.params.id);
     try {
@@ -132,13 +136,14 @@ export default function getCrudRouter(tableName: string) {
       res.status(row ? OK : NOT_FOUND).send(JSON.stringify(row));
     } catch (e) {
       // istanbul ignore next
-      errorHandler(res, e);
+      errorHandler(next, e);
     }
   }
 
   async function patchHandler(
     req: express$Request,
-    res: express$Response
+    res: express$Response,
+    next: express$NextFunction
   ): Promise<void> {
     const id = Number(req.params.id);
     const changes = cast(req.body, Object);
@@ -147,13 +152,14 @@ export default function getCrudRouter(tableName: string) {
       res.status(OK).send(JSON.stringify(newObj));
     } catch (e) {
       // istanbul ignore next
-      errorHandler(res, e);
+      errorHandler(next, e);
     }
   }
 
   async function postHandler(
     req: express$Request,
-    res: express$Response
+    res: express$Response,
+    next: express$NextFunction
   ): Promise<void> {
     try {
       const body = cast(req.body, Object);
@@ -161,13 +167,14 @@ export default function getCrudRouter(tableName: string) {
       res.send(JSON.stringify(id));
     } catch (e) {
       // istanbul ignore next
-      errorHandler(res, e);
+      errorHandler(next, e);
     }
   }
 
   async function putHandler(
     req: express$Request,
-    res: express$Response
+    res: express$Response,
+    next: express$NextFunction
   ): Promise<void> {
     const id = Number(req.params.id);
     const newVersion = cast(req.body, Object);
@@ -176,13 +183,14 @@ export default function getCrudRouter(tableName: string) {
       res.status(OK).send(JSON.stringify(newObj));
     } catch (e) {
       // istanbul ignore next
-      errorHandler(res, e);
+      errorHandler(next, e);
     }
   }
 
   async function queryHandler(
     req: express$Request,
-    res: express$Response
+    res: express$Response,
+    next: express$NextFunction
   ): Promise<void> {
     const where = castString(req.body);
     try {
@@ -190,7 +198,7 @@ export default function getCrudRouter(tableName: string) {
       res.send(JSON.stringify(rows));
     } catch (e) {
       // istanbul ignore next
-      errorHandler(res, e);
+      errorHandler(next, e);
     }
   }
 

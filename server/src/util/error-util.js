@@ -3,10 +3,10 @@
 const inTest = process.env.NODE_ENV === 'test';
 
 // istanbul ignore next
-export function errorHandler(res: express$Response, error: Error): void {
+export function errorHandler(next: express$NextFunction, error: Error): void {
   const msg = String(error.message ? error.message : error);
   logError(msg);
-  res.status(500).send(msg);
+  next(new Error(msg)); // invokes builtin Express error handler
 }
 
 export function logError(msg: string): void {
