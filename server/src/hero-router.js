@@ -77,7 +77,7 @@ function wrap(handler: HandlerType): HandlerType {
     try {
       await setConn();
       let result = await handler(req, res, next);
-      await conn.done();
+      conn.done();
       // Change numeric results to a string so
       // Express won't think it is an HTTP status code.
       if (typeof result === 'number') result = String(result);
