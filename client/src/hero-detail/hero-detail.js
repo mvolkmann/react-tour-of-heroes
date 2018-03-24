@@ -1,13 +1,7 @@
 // @flow
 
 import React, {Component} from 'react';
-import {
-  dispatch,
-  dispatchPush,
-  dispatchSet,
-  Input,
-  watch
-} from 'redux-easy';
+import {dispatch, dispatchPush, dispatchSet, Input, watch} from 'redux-easy';
 import {putJson} from '../util/rest-util';
 
 import type {HeroType} from '../types';
@@ -34,7 +28,7 @@ class HeroDetail extends Component<PropsType> {
     } catch (e) {
       console.error('hero-detail.js save: e =', e);
     }
-  }
+  };
 
   render() {
     const {selectedHero} = this.props;

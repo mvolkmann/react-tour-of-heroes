@@ -10,10 +10,7 @@ type PropsType = {
 };
 
 const renderMessage = (message, index) => (
-  <div
-    className="message"
-    key={'message' + index}
-  >
+  <div className="message" key={'message' + index}>
     {message}
   </div>
 );

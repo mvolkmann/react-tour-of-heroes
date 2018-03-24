@@ -13,11 +13,7 @@ type PropsType = {
 };
 
 const renderHero = hero => (
-  <div
-    className="hero"
-    key={hero.id}
-    onClick={() => showDetail(hero)}
-  >
+  <div className="hero" key={hero.id} onClick={() => showDetail(hero)}>
     {hero.name}
   </div>
 );

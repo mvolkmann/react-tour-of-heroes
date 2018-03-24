@@ -52,7 +52,7 @@ class HeroList extends Component<PropsType> {
     const matchesExisting = heroList.find(hero => hero.name === newHeroName);
     return !matchesExisting;
     //return newHeroName && Object.keys(heroes).length === 0;
-  }
+  };
 
   deleteHero = async (
     event: SyntheticInputEvent<HTMLButtonElement>,
@@ -70,7 +70,7 @@ class HeroList extends Component<PropsType> {
   };
 
   filterList = () => {
-  //filterList = async event => {
+    //filterList = async event => {
     /*
     const {value} = event.target;
     const path = value ? 'hero/contains/' + value : 'hero';
