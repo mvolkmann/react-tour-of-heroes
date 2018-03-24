@@ -32,7 +32,6 @@ app.use(bodyParser.json());
 // Parse text request bodies to JavaScript strings.
 app.use(bodyParser.text());
 
-//crudService(app, 'hero');
 app.use('/hero', heroRouter);
 app.use('/crud', getCrudRouter('hero'));
 
