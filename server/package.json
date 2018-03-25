@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "REST server for React Tour of Heroes",
   "main": "index.js",
-  "author": "R. Mark Volkmann <r.mark.volkmann@gmail.com> (https://mvolkmann.github.io/)",
+  "author":
+    "R. Mark Volkmann <r.mark.volkmann@gmail.com> (https://mvolkmann.github.io/)",
   "license": "MIT",
   "scripts": {
     "build": "babel -q src -d build",
@@ -11,19 +12,19 @@
     "dbsetup": "mysql -uroot -proot < ./ddl.sql",
     "dbstart": "mysql.server start",
     "dbstop": "mysql.server stop",
+    "debug": "node --inspect --inspect-brk build/index.js",
     "cover": "CI=true npm test -- --coverage",
     "cover-open": "open coverage/lcov-report/index.html",
     "flow": "flow",
     "format": "prettier-eslint --write src/**/*.js",
     "lint": "eslint --quiet src --ext .js",
     "start": "node build/index.js",
-    "start-dev": "babel-watch --message 'restarting' --ignore node_modules -- src/index.js",
+    "start-dev":
+      "babel-watch --message 'restarting' --ignore node_modules -- src/index.js",
     "test": "jest --watch"
   },
   "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.js"
-    ],
+    "collectCoverageFrom": ["src/**/*.js"],
     "coverageThreshold": {
       "global": {
         "branches": 90,
