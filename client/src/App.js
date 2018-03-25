@@ -24,6 +24,7 @@ const routeMap = {
 
 class App extends Component<PropsType> {
   async componentDidMount() {
+    // Load all heroes from database.
     const heroes = ((await getJson('hero'): any): HeroType[]);
     dispatchSet('heroes', heroListToMap(heroes));
   }
