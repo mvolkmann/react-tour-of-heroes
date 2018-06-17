@@ -6,13 +6,15 @@ It uses a MySQL database and
 REST services implementing using Node.js and Express.
 
 To start the server
-1. cd server
-2. npm install
-3. npm run dbstart (assumes MySQL is installed)
-4. npm run dbsetup
-5. npm start -or- npm run start-dev
+
+1.  `cd server`
+2.  `npm install`
+3.  `npm run dbstart` (assumes MySQL is installed)
+4.  `npm run dbsetup`
+5.  `npm start` -or- `npm run start-dev`
 
 To start the client
-1. cd client
-2. npm install
-3. npm start
+
+1.  `cd client`
+2.  `npm install`
+3.  `npm start`
