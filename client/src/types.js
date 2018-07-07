@@ -8,6 +8,7 @@ export type HeroType = {
 export type HeroMapType = {[id: number]: HeroType};
 
 export type StateType = {
+  filter: string,
   heroes: HeroMapType,
   messages: string[],
   newHeroName: string,

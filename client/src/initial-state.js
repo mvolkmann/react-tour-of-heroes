@@ -3,6 +3,7 @@
 import type {StateType} from './types';
 
 const initialState: StateType = {
+  filter: '',
   heroes: {},
   messages: [],
   newHeroName: '',

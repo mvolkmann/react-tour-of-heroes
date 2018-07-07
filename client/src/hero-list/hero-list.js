@@ -17,6 +17,7 @@ import {deleteResource, getJson, postJson} from '../util/rest-util';
 import './hero-list.css';
 
 type PropsType = {
+  filter: string,
   heroes: HeroMapType,
   newHeroName: string
 };
@@ -69,15 +70,14 @@ class HeroList extends Component<PropsType> {
     }
   };
 
-  filterList = () => {
-    //filterList = async event => {
-    /*
+  /*
+  filterList = async event => {
     const {value} = event.target;
     const path = value ? 'hero/contains/' + value : 'hero';
     const heroes = await getJson(path);
     dispatchSet('heroes', heroes);
-    */
   };
+  */
 
   getAddForm = () => (
     <div className="add-form">
@@ -111,16 +111,21 @@ class HeroList extends Component<PropsType> {
   }
 
   render() {
-    const {heroes} = this.props;
-    const heroList = heroMapToList(heroes);
+    const {filter, heroes} = this.props;
+    let heroList = heroMapToList(heroes);
+    if (filter) heroList = heroList.filter(hero => hero.name.includes(filter));
     return (
       <div className="hero-list">
         <h2>My Heroes</h2>
         {this.getAddForm()}
+        <div>
+          <label>Filter</label>
+          <Input path="filter" />
+        </div>
         {heroList.map(hero => this.renderHero(hero))}
       </div>
     );
   }
 }
 
-export default watch(HeroList, {heroes: '', newHeroName: ''});
+export default watch(HeroList, {filter: '', heroes: '', newHeroName: ''});
