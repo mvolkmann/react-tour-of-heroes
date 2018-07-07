@@ -1,0 +1,14 @@
+.hero-statistics {
+  border: solid red 2px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 10px;
+  padding: 4px;
+
+  label {
+    display: inline-block;
+    font-weight: bold;
+    text-align: right;
+    width: 120px;
+  }
+}
