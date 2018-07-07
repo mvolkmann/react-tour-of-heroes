@@ -70,23 +70,10 @@ class HeroList extends Component<PropsType> {
     }
   };
 
-  /*
-  filterList = async event => {
-    const {value} = event.target;
-    const path = value ? 'hero/contains/' + value : 'hero';
-    const heroes = await getJson(path);
-    dispatchSet('heroes', heroes);
-  };
-  */
-
   getAddForm = () => (
     <div className="add-form">
       <label>Hero Name:</label>
-      <Input
-        path="newHeroName"
-        onChange={this.filterList}
-        onEnter={this.addHero}
-      />
+      <Input path="newHeroName" onEnter={this.addHero} />
       <button disabled={!this.canAdd()} onClick={this.addHero}>
         Add
       </button>
