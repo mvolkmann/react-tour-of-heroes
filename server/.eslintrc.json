@@ -25,9 +25,7 @@
     }
   },
 
-  "plugins": [
-    "flowtype"
-  ],
+  "plugins": ["flowtype"],
 
   "rules": {
     "accessor-pairs": "error",
@@ -67,7 +65,11 @@
     "flowtype/object-type-delimiter": ["error", "comma"],
     "flowtype/require-parameter-type": "off",
     "flowtype/require-return-type": "off",
-    "flowtype/require-valid-file-annotation": ["error", "always", {"annotationStyle": "line"}],
+    "flowtype/require-valid-file-annotation": [
+      "error",
+      "always",
+      {"annotationStyle": "line"}
+    ],
     "flowtype/require-variable-type": "off",
     "flowtype/semi": ["error", "always"],
     "flowtype/sort-keys": "off",
@@ -104,7 +106,6 @@
     "max-nested-callbacks": ["error", 8],
     "max-params": "off",
     "max-statements": ["warn", 50],
-    "max-statements-per-line": "off", // doesn't work
     "multiline-ternary": "off",
     "new-cap": "off",
     "new-parens": "error",
@@ -253,14 +254,16 @@
     "one-var": "off",
     "one-var-declaration-per-line": "off",
     "operator-assignment": ["error", "always"],
-    //"operator-linebreak": ["error", "after"],
     "padded-blocks": "off",
     "prefer-arrow-callback": "error",
     "prefer-const": "error",
     "prefer-destructuring": "error",
     "prefer-numeric-literals": "error",
     "prefer-promise-reject-errors": "off",
-    "prefer-reflect": ["warn", {"exceptions": ["apply", "call", "delete", "getOwnPropertyNames"]}],
+    "prefer-reflect": [
+      "warn",
+      {"exceptions": ["apply", "call", "delete", "getOwnPropertyNames"]}
+    ],
     "prefer-rest-params": "error",
     "prefer-spread": "error",
     "prefer-template": "off",
@@ -277,11 +280,13 @@
     "sort-keys": "off",
     "sort-vars": ["warn", {"ignoreCase": true}],
     "space-before-blocks": ["error", "always"],
-    "space-before-function-paren": ["error", {"anonymous": "always", "named": "never"}],
+    "space-before-function-paren": [
+      "error",
+      {"anonymous": "always", "named": "never"}
+    ],
     "space-in-parens": ["error", "never"],
     "space-infix-ops": ["error"],
-    //"space-infix-ops": ["error", {"**": "never"}],
-    "space-unary-ops": ["error", { "words": true, "nonwords": false }],
+    "space-unary-ops": ["error", {"words": true, "nonwords": false}],
     "spaced-comment": "off",
     "strict": "off",
     "symbol-description": "error",
