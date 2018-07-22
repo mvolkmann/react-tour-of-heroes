@@ -1,13 +1,13 @@
 {
   "presets": [
-    ["env", {
-      "targets": {
-        "node": "8.9"
+    [
+      "env",
+      {
+        "targets": {
+          "node": "8.9"
+        }
       }
-    }]
+    ]
   ],
-  "plugins": [
-    "transform-flow-strip-types",
-    ["transform-object-rest-spread", {"useBuiltIns": true}]
-  ]
+  "plugins": ["transform-flow-strip-types"]
 }
