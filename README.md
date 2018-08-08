@@ -1,7 +1,7 @@
 # React Tour of Heroes
 
 This is a React implementation of the "Tour of Heroes" web application
-that is used in the primary Angular tutorial at https://angular.io/tutorial.
+that is used in the primary Angular tutorial at <https://angular.io/tutorial>.
 It uses a MySQL database and
 REST services implementing using Node.js and Express.
 

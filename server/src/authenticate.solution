@@ -1,4 +1,5 @@
-// Add this code in index.js for second hands-on exercise.
+// For second hands-on exercise, add this code
+// in index.js BEFORE the existing route for "/here".
 
 // A custom middleware function
 function authenticate(
