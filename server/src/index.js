@@ -26,7 +26,7 @@ app.use(cors());
 // This is only needed to serve static files.
 //app.use('/', express.static('public'));
 
-// Parse JSON request bodGies to JavaScript objects.
+// Parse JSON request bodies to JavaScript objects.
 app.use(bodyParser.json());
 
 // Parse text request bodies to JavaScript strings.
